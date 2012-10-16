@@ -88,7 +88,11 @@
  *   $db_url = 'mysqli://username:password@localhost/databasename';
  *   $db_url = 'pgsql://username:password@localhost/databasename';
  */
-$db_url = 'mysql://username:password@localhost/databasename';
+$services = getenv("VCAP_SERVICES");
+$services_json = json_decode($services,true);
+$mysql_config = $services_json["mysql-5.1"][0]["credentials"];
+
+$db_url = 'mysql://' . $mysql_config["user"] . ':' . $mysql_config["password"] . '@' . $mysql_config["hostname"] . ':' . $mysql_config["port"] . '/' . $mysql_config["name"];
 $db_prefix = '';
 
 /**
